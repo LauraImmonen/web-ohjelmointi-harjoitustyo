@@ -1,0 +1,17 @@
+<form action="/uusi_käyttäjä" method="POST">
+    Anna nimesi:
+    <input type="text" name="username">
+    <br>
+
+    Oletko opettaja vai oppilas? 
+    <p>
+    <input type="radio" name="authority" value="admin"> opettaja
+    <input type="radio" name="authority" value="user"> oppilas
+    </p>
+
+    Luo salasana:
+    <input type="password" name="salasana" required>
+    <br>
+
+    <input type="submit" value="Lähetä">
+</form>
