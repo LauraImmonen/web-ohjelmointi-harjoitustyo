@@ -1,5 +1,6 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy.sql import text
 from flask import render_template, request, redirect, url_for, session
 from os import getenv
 from werkzeug.security import check_password_hash, generate_password_hash
@@ -13,34 +14,62 @@ app.config['DEBUG'] = True
 
 @app.route("/")
 def index():
-    return render_template("etusivu.html")
+    return render_template("front_page.html")
 
 
-@app.route("/tunnus", methods=["POST"])
+@app.route("/account", methods=["POST"])
 def onko_tunnusta():
     onko_tunnusta = request.form.get("onko_tunnusta")
     if onko_tunnusta == "Ei":
-        return redirect(url_for("uusi_käyttäjä"))
+        return redirect(url_for("new_account"))
     elif onko_tunnusta == "Kyllä":
         return redirect(url_for("login"))
     
     
-@app.route("/uusi_käyttäjä", methods=["GET", "POST"])
-def uusi_käyttäjä():
+@app.route("/new_account", methods=["GET", "POST"])
+def new_account():
     if request.method == 'POST':
         name = request.form["username"]
-        authority = request.form["authority"]
+        admin = request.form["admin"]
         password = request.form["salasana"]
         hash_value = generate_password_hash(password)
 
+
+
+        sql_check = "SELECT 1 FROM users WHERE username=:username"
+        result = db.session.execute(text(sql_check), {"username": name})
+        existing_user = result.fetchone()
         
-        sql = "INSERT INTO users (username, password, authority) VALUES (:username, :password, :authority)"
-        db.session.execute(text(sql), {"username": name, "password": hash_value, "authority": authority})
-        db.session.commit()
+        if existing_user:
+            
+            return "Username already exists"
+        else:
+           
+            sql_insert = "INSERT INTO users (username, password, admin) VALUES (:username, :password, :admin)"
+            db.session.execute(text(sql_insert), {"username": name, "password": hash_value, "admin": admin})
+            db.session.commit()
+        
+        
+        
+        sql_get_user_id = "SELECT id FROM users WHERE username=:username"
+        result = db.session.execute(text(sql_get_user_id), {"username": name})
+        user_id = result.fetchone()[0]
+            
+        if admin == "True":
+            sql_insert = "INSERT INTO teachers (teacher_id, username) VALUES (:teacher_id, :username)"
+            db.session.execute(text(sql_insert), {"teacher_id": user_id, "username": name})
+            db.session.commit()
+        else:
+            sql_insert = "INSERT INTO students (student_id, username) VALUES (:student_id, :username)"
+            db.session.execute(text(sql_insert), {"student_id": user_id, "username": name})
+            db.session.commit()
+
 
         return redirect(url_for("login"))
 
-    return render_template("luo_käyttäjä.html")
+    return render_template("create_user.html")
+
+
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -48,22 +77,21 @@ def login():
         username = request.form["username"]
         password = request.form["password"]
 
-      
-        sql = "SELECT id, password, authority FROM users WHERE username=:username"
+        sql = "SELECT id, password, admin FROM users WHERE username=:username"
         result = db.session.execute(text(sql), {"username": username})
         user = result.fetchone()    
 
         if not user:
-            return "Tällä nimellä ei vielä löydy tiliä"
+            return "There is no account with this username"
         else:
             hash_value = user.password
+            
             if check_password_hash(hash_value, password):
                
                 session["username"] = username
-                session["authority"] = user.authority
+                session["admin"] = user.admin  
                 
-                
-                if user.authority == "admin":
+                if user.admin == "True":
                     return redirect(url_for("teacher_dashboard"))
                 else:
                     return redirect(url_for("student_dashboard"))
@@ -73,11 +101,12 @@ def login():
     return render_template("login_html.html")
 
 
+
 @app.route("/teacher_dashboard")
 def teacher_dashboard():
     
-    if "username" in session and session.get("authority") == "admin":
-        return render_template("opettajan_sivut.html")
+    if "username" in session and session.get("admin") == "True":
+        return render_template("teacher_page.html")
     else:
         return "Unauthorized Access"  
 
@@ -86,7 +115,7 @@ def teacher_dashboard():
 @app.route("/student_dashboard")
 def student_dashboard():
  
-    if "username" in session and session["authority"] == "user":
+    if "username" in session and session["admin"] == "False":
         return "Welcome to the Student's Dashboard"
     else:
         return "Unauthorized Access" 

@@ -9,10 +9,13 @@ admin = opettaja ja user = opiskelija.
 - opettaja (admin) voi luoda/muokata/poistaa kursseja, joille oppilaat voivat ilmoittautua.
 - opettaja (admin) näkee ketä on ilmoittautunut kurssille.
 - opettaja (admin) pystyy merkitsemään kurssin suoritetuksi ja antamaan oppilaalle arvosanan sekä opintopisteet suoritetusta kurssista. 
-- Opiskelija näkee listan kursseista ja voi liittyä kurssille tai poistaa itsensä kurssilta.
-- opiskelija (user) pystyy tarkastelemaan omia tietojaan (omat kurssit, arvosanat sekä opintopisteet).
-- opiskelija (user) näkee kurssin suoritettuaan myös kurssin suorittaneiden keskiarvon. 
+- Opiskelija näkee listan kursseista ja voi liittyä kurssille.
+- opiskelija (user) pystyy tarkastelemaan omia tietojaan (omat kurssit, arvosanat).
+
+
+Tämä on ensimmäinen web-sovellukseni, joten koodini on varmasti vielä hieman kömpelöä. Otan mielelläni vastaan palautetta/vinkkejä, siitä miten voisin parantaa koodini tehokkuutta ja luettavuutta.
   
+
 # Asennusohjeet
 
 Kloonaa repositorio omalle koneellesi komennolla
