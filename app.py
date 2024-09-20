@@ -102,7 +102,7 @@ def login():
 
 
 
-@app.route("/teacher_dashboard")
+@app.route("/teacher_front_page")
 def teacher_dashboard():
     
     if "username" in session and session.get("admin") == "True":
@@ -112,11 +112,11 @@ def teacher_dashboard():
 
     
 
-@app.route("/student_dashboard")
+@app.route("/student_front_page")
 def student_dashboard():
  
     if "username" in session and session["admin"] == "False":
-        return "Welcome to the Student's Dashboard"
+        return render_template("student_page.html")
     else:
         return "Unauthorized Access" 
 
@@ -126,4 +126,6 @@ def logout():
     del session["username"]
     return redirect("/")
   
+
+
 
