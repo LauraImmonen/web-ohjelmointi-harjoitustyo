@@ -18,10 +18,23 @@ Tämä on ensimmäinen web-sovellukseni, joten koodini on varmasti vielä kömpe
 
 # Asennusohjeet
 
-Luo postgresql:lään database nimellä "koulusovellus_db"
+Postgresql asennusohjeet:
 
-ja lisää siihen taulut tiedostosta schema.sql
+Voit luoda vertaisarviointia varten Postgresiin oman tietokannan seuraavasti
+```
+$ psql
+user=# CREATE DATABASE <tietokannan-nimi>;
+```
 
+Voit nyt määrittää vertaisarvioitavan projektin tietokantaskeeman omasta tietokannastasi erilliseen tietokantaan komennolla
+```
+$ psql -d <tietokannan-nimi> < schema.sql
+```
+
+Määritä vielä tietokannan osoite projektille siten, että osoite päättyy luomasi tietokannan nimeen. Esimerkiksi, jos omalla sovelluksellasi osoite on muotoa postgresql:///user ja loit vertaisarviontia varten tietokannan nimeltä testi, tulisi uudeksi tietokannan osoitteeksi postgresql:///testi.
+
+
+repositio asennusohjeet:
 
 
 Kloonaa repositorio omalle koneellesi komennolla
@@ -44,6 +57,11 @@ source venv/bin/activate
 Asenna riippuvuudet komennolla
 ```
 pip install -r requirements.txt
+```
+
+python-dotenv tulee myös olla asennettuna
+```
+(venv) $ pip install python-dotenv
 ```
 
 Käynnistä sovellus 

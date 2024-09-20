@@ -1,3 +1,7 @@
-<title>Teacher's front page</title>
-<h1>Opettajan sivut</h1>
+{% if session.username %}
 
+<title>Teacher's front page</title>
+<h2>Opettajan sivut</h2>
+<p>Tervetuloa <i>opettajan etusivulle<i> <p> <a href="/logout">Kirjaudu ulos</a>
+
+{% endif %}

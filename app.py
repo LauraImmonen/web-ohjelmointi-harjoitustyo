@@ -8,7 +8,8 @@ from werkzeug.security import check_password_hash, generate_password_hash
 app = Flask(__name__)
 app.secret_key = getenv("SECRET_KEY")
 
-app.config["SQLALCHEMY_DATABASE_URI"] = "postgresql:///koulusovellus_db"
+
+app.config["SQLALCHEMY_DATABASE_URI"] = getenv("DATABASE_URL")
 db = SQLAlchemy(app)
 app.config['DEBUG'] = True
 
@@ -77,45 +78,55 @@ def login():
         username = request.form["username"]
         password = request.form["password"]
 
-        sql = "SELECT id, password, admin FROM users WHERE username=:username"
-        result = db.session.execute(text(sql), {"username": username})
+        sql = text("SELECT id, password FROM users WHERE username=:username")
+        result = db.session.execute(sql, {"username":username})
         user = result.fetchone()    
-
         if not user:
-            return "There is no account with this username"
+            "invalid username"
         else:
             hash_value = user.password
-            
             if check_password_hash(hash_value, password):
-               
-                session["username"] = username
-                session["admin"] = user.admin  
+                session['username'] = username
                 
-                if user.admin == "True":
-                    return redirect(url_for("teacher_dashboard"))
+                sql_get_user_admin = "SELECT admin FROM users WHERE username=:username"
+                result = db.session.execute(text(sql_get_user_admin), {"username": username})
+                user_admin = result.fetchone()[0]
+                
+                if user_admin == "True":
+                    return redirect(url_for("teacher_front_page"))
                 else:
-                    return redirect(url_for("student_dashboard"))
+                    return redirect(url_for("student_front_page"))
             else:
-                return "Invalid password"
+                "invalid password"
+            
     
     return render_template("login_html.html")
 
 
-
 @app.route("/teacher_front_page")
-def teacher_dashboard():
+def teacher_front_page():
+    username = session.get('username')
     
-    if "username" in session and session.get("admin") == "True":
+    sql_get_user_admin = "SELECT admin FROM users WHERE username=:username"
+    result = db.session.execute(text(sql_get_user_admin), {"username": username})
+    user_admin = result.fetchone()[0]
+    
+    if user_admin == "True":
         return render_template("teacher_page.html")
     else:
-        return "Unauthorized Access"  
-
+        return "Unauthorized Access" 
     
 
+
 @app.route("/student_front_page")
-def student_dashboard():
- 
-    if "username" in session and session["admin"] == "False":
+def student_front_page():
+    username = session.get('username')
+    
+    sql_get_user_admin = "SELECT admin FROM users WHERE username=:username"
+    result = db.session.execute(text(sql_get_user_admin), {"username": username})
+    user_admin = result.fetchone()[0]
+    
+    if user_admin == "False":
         return render_template("student_page.html")
     else:
         return "Unauthorized Access" 
