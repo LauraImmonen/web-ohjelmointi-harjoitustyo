@@ -1,7 +1,13 @@
 {% if session.username %}
 
 <title>Teacher's front page</title>
-<h2>Opettajan sivut</h2>
-<p>Tervetuloa <i>opettajan etusivulle<i> <p> <a href="/logout">Kirjaudu ulos</a>
+    <h2>Opettajan sivut</h2>
+
+        <p>Tervetuloa <i>opettajan etusivulle<i> <p> 
+
+            <a href="/create_course">luo uusi kurssi</a>
+            <br>
+            <a href="/logout">Kirjaudu ulos</a>
+
 
 {% endif %}

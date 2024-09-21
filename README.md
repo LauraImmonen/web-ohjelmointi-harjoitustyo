@@ -26,15 +26,10 @@ $ psql
 user=# CREATE DATABASE <tietokannan-nimi>;
 ```
 
-Voit nyt määrittää vertaisarvioitavan projektin tietokantaskeeman omasta tietokannastasi erilliseen tietokantaan komennolla
-```
-$ psql -d <tietokannan-nimi> < schema.sql
-```
-
-Määritä vielä tietokannan osoite projektille siten, että osoite päättyy luomasi tietokannan nimeen. Esimerkiksi, jos omalla sovelluksellasi osoite on muotoa postgresql:///user ja loit vertaisarviontia varten tietokannan nimeltä testi, tulisi uudeksi tietokannan osoitteeksi postgresql:///testi.
+Luo vaadittavat taulut tietokantaan tiedostosta: schema.sql
 
 
-repositio asennusohjeet:
+Repositorio asennusohjeet:
 
 
 Kloonaa repositorio omalle koneellesi komennolla
@@ -43,7 +38,17 @@ Kloonaa repositorio omalle koneellesi komennolla
 git clone https://github.com/LauraImmonen/LauraImmonen-web-ohjelmointi-harjoitustyo.git
 ```
 
-Luo virtuaaliympäristö komennolla 
+Luo myös oma .env kansio tähän lokaaliin repoon, jonne teet oman salaisen avaimen seuraavasti:
+```
+SECRET_KEY=(itse luomasi sercetkey)
+```
+Lisää .env kansioon myös tekemäsi tietokannan osoite seuraavasti, esim: jos loit vertaisarviontia varten tietokannan nimeltä testi, tulisi uudeksi tietokannan osoitteeksi postgresql:///testi.
+```
+DATABASE_URL=postgresql:///testi
+```
+
+
+Luo virtuaaliympäristö komennolla:
 ```
 python -m venv venv
 ```
@@ -68,3 +73,4 @@ Käynnistä sovellus
 ```
 flask run
 ```
+
