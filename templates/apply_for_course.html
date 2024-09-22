@@ -1,0 +1,12 @@
+{% if session.username %}
+
+    <hr>
+    {% for course in courses %}
+            {{ course[1] }}
+            <form action="{{ url_for('enroll', course_id=course.course_id)}}" method="POST">
+            <button type="submit">Ilmoittaudu</button>
+            </form>
+        <hr>
+    {% endfor %}
+
+{% endif %}

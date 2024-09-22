@@ -98,7 +98,7 @@ def login():
             if check_password_hash(hash_value, password):
                 session['username'] = username
                 
-                if is_admin:
+                if is_admin():
                     return redirect(url_for("teacher_front_page"))
                 else:
                     return redirect(url_for("student_front_page"))
@@ -112,7 +112,7 @@ def login():
 
 @app.route("/teacher_front_page")
 def teacher_front_page():
-    if is_admin:
+    if is_admin():
         return render_template("teacher_page.html")
     else:
         return "Unauthorized Access" 
@@ -121,7 +121,7 @@ def teacher_front_page():
     
 @app.route("/create_course", methods=["GET", "POST"])
 def create_course():
-    if not is_admin:
+    if not is_admin():
         return "Unauthorized Access" 
     
     if request.method == "POST":
@@ -149,9 +149,10 @@ def create_course():
     return render_template("create_course.html")
     
     
+    
 @app.route("/course_created")
 def course_created():
-    if not is_admin:
+    if not is_admin():
         return "Unauthorized Access" 
     
     return render_template("course_created.html")
@@ -165,6 +166,37 @@ def student_front_page():
     else:
         return "Unauthorized Access" 
     
+
+
+@app.route("/apply_for_course")
+def apply_for_course():
+    if not is_admin():
+        result = db.session.execute(text("SELECT course_id, course FROM courses"))
+        courses = result.fetchall()
+        
+        return render_template("apply_for_course.html", courses=courses)
+    
+    return "Unauthorized Access"
+
+
+
+@app.route("/enroll/<int:course_id>", methods=["POST"])
+def enroll(course_id):
+    if not is_admin():
+        username = session.get("username")
+        
+        sql = "SELECT student_id FROM students WHERE username = :username"
+        result = db.session.execute(text(sql), {"username": username})
+        student_id = result.fetchone()
+
+        sql_insert = "INSERT INTO enrollments (student_id, course_id) VALUES (:student_id, :course_id)"
+        db.session.execute(text(sql_insert), {"student_id": student_id[0], "course_id": course_id})
+        db.session.commit()
+        
+        return redirect(url_for("student_front_page")) 
+            
+    return "Unauthorized Access"
+
 
 
 @app.route("/logout")
