@@ -91,7 +91,7 @@ def login():
         result = db.session.execute(sql, {"username":username})
         user = result.fetchone()    
         if not user:
-            "invalid username"
+            "Invalid username"
         else:
             hash_value = user.password
             
@@ -103,7 +103,7 @@ def login():
                 else:
                     return redirect(url_for("student_front_page"))
             else:
-                "invalid password"
+                "Invalid password"
             
     
     return render_template("login_html.html")
@@ -171,7 +171,7 @@ def student_front_page():
 @app.route("/apply_for_course")
 def apply_for_course():
     if not is_admin():
-        result = db.session.execute(text("SELECT course_id, course FROM courses"))
+        result = db.session.execute(text("SELECT course_id, course, course_description FROM courses"))
         courses = result.fetchall()
         
         return render_template("apply_for_course.html", courses=courses)
@@ -182,20 +182,37 @@ def apply_for_course():
 
 @app.route("/enroll/<int:course_id>", methods=["POST"])
 def enroll(course_id):
-    if not is_admin():
-        username = session.get("username")
-        
-        sql = "SELECT student_id FROM students WHERE username = :username"
-        result = db.session.execute(text(sql), {"username": username})
-        student_id = result.fetchone()
+    if is_admin():
+        return "Unauthorized Access"
+    
+    username = session.get("username")
+    
+    sql = "SELECT student_id FROM students WHERE username = :username"
+    result = db.session.execute(text(sql), {"username": username})
+    student_id = result.fetchone()
 
-        sql_insert = "INSERT INTO enrollments (student_id, course_id) VALUES (:student_id, :course_id)"
-        db.session.execute(text(sql_insert), {"student_id": student_id[0], "course_id": course_id})
-        db.session.commit()
+    if student_id:
+        sql_check = "SELECT 1 FROM enrollments WHERE student_id = :student_id AND course_id = :course_id"
+        existing_enrollment = db.session.execute(text(sql_check), {"student_id": student_id[0], "course_id": course_id}).fetchone()
         
-        return redirect(url_for("student_front_page")) 
-            
-    return "Unauthorized Access"
+        if existing_enrollment:
+            return "You are already enrolled in this course"
+        
+    sql_insert = "INSERT INTO enrollments (student_id, course_id) VALUES (:student_id, :course_id)"
+    db.session.execute(text(sql_insert), {"student_id": student_id[0], "course_id": course_id})
+    db.session.commit()
+    
+    return redirect(url_for("enrollment_successful")) 
+     
+
+
+
+@app.route("/enrollment_successful")
+def enrollment_successful():
+    if is_admin():
+        return "Unauthorized Access"
+    
+    return render_template("enrollment_successful.html")
 
 
 

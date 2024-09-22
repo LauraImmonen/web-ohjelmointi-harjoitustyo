@@ -13,7 +13,11 @@ admin = opettaja ja user = opiskelija.
 - opiskelija (user) pystyy tarkastelemaan omia tietojaan (omat kurssit, arvosanat).
 
 
-Tämä on ensimmäinen web-sovellukseni, joten koodini on varmasti vielä kömpelöä ja vaikealukuista. Otan mielelläni vastaan vinkkejä/palautetta siitä, miten pystyisin parantamaan koodini toimivuutta ja luettavuutta. 
+Tämä on ensimmäinen web-sovellukseni, joten koodini on varmasti vielä kömpelöä. Otan mielelläni vastaan vinkkejä/palautetta siitä, miten pystyisin parantamaan koodini toimivuutta ja luettavuutta. 
+
+Tällä hetkellä sovelluksessa pystyy luomaan käyttäjän, kirjautumaan sisään sovellukseen ja opettajilla ja opiskelijoilla on omat etusivunsa. Opettaja pystyy luomaan kursseja, ja oppilas pystyy ilmoittautumaan niille. Muita toimintoja en ole vielä ehtinyt tekemään. 
+
+Haluaisin palautetta myös siitä, kannattaako minun vaihtaa virheviestit ja muut suomeksi, vai jättää englanniksi. Sovellus on itse suomenkielellä, mutta ymmärsin, että koodi tulisi kaikki olla englanniksi, joten olen tehnyt virheviestit yms. englanniksi. 
 
 
 # Asennusohjeet
