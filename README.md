@@ -30,17 +30,28 @@ $ psql
 user=# CREATE DATABASE <tietokannan-nimi>;
 ```
 
-Luo vaadittavat taulut tietokantaan tiedostosta: schema.sql
-
-
 Repositorio asennusohjeet:
 
+Luo hakemisto tälle repolle esim:
+```
+mkdir testi
+```
+ja luo reitti sille:
+```
+cd testi
+```
 
 Kloonaa repositorio omalle koneellesi komennolla
 
 ```
 git clone https://github.com/LauraImmonen/LauraImmonen-web-ohjelmointi-harjoitustyo.git
 ```
+
+Tämän jälkeen avaa reitti hakemistoon
+```
+cd testi/
+```
+(näet komennolla ls, oletko repositiossa, pitäisi näkyä kaikki sovelluksen osat esim app.py, schema.sql yms. Jos ei näy, niin sinun pitää mennä ns syvemmälle, avaa siis tiedosto koneella ja katso reitti, se voi olla esim. Documents/testi/repon_nimi/ ja yritä sitten: cd Documents/testi/repon_nimi/) 
 
 Luo myös oma .env kansio tähän lokaaliin repoon, jonne teet oman salaisen avaimen seuraavasti:
 ```
@@ -52,9 +63,14 @@ DATABASE_URL=postgresql:///testi
 ```
 
 
-Luo virtuaaliympäristö komennolla:
+Luo schemat tietokantaan ensin ja sitten virtuaaliympäristö komennoilla:
+
 ```
-python -m venv venv
+psql -d (oman tietokannan nimi) < schema.sql
+```
+
+```
+python3 -m venv venv
 ```
 
 Aktivoi virtuaaliympäristö
@@ -70,7 +86,7 @@ pip install -r requirements.txt
 
 python-dotenv tulee myös olla asennettuna
 ```
-(venv) $ pip install python-dotenv
+pip install python-dotenv
 ```
 
 Käynnistä sovellus 
