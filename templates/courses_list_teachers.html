@@ -1,0 +1,22 @@
+{% if session.username %}
+<title>Kurssini</title>
+   <h2>Kurssini:</h2>
+        <br>
+        {% if courses %}
+            {% for course in courses %}
+                <b>{{course[1]}}</b> 
+                <p>{{course[2]}}</p> 
+                
+                <form action="{{url_for('edit_course', course_id=course[0])}}" method="GET">
+                    <button type="submit">Muokkaa kurssin sisältöä</button>
+                </form>
+                
+                <form action="{{url_for('delete_course', course_id=course[0])}}" method="POST">
+                    <button type="submit">Poista kurssi</button>
+                </form>
+                <hr>
+            {% endfor %}
+        
+        {% endif %}
+
+{% endif %}

@@ -1,15 +1,16 @@
 {% if session.username %}
-<title>Create course</title>
+<title>Luo kurssi</title>
     <h2>Luo uusi kurssi:</h2>
 
         <form action="/create_course" method="POST">
-        <label>Kurssin nimi:</label>
-        <input type="text" name="course_name" required>
-        
-        <label>Kurssin kuvaus:</label>
-        <textarea name="course_description" required></textarea>
-        
-        <input type="submit" value="Create Course">
+            <label>Kurssin nimi:</label>
+            <input type="text" name="course_name" required>
+            
+            <label>Kurssin kuvaus:</label>
+            <textarea name="course_description" required></textarea>
+            
+            <input type="submit" value="Create Course">
 
         </form>
+        
 {% endif %}

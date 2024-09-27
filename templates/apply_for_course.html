@@ -1,14 +1,18 @@
 {% if session.username %}
-
-    <hr>
-    {% for course in courses %}
-            <b>{{course[1]}}</b>
-            <p>{{ course[2] }}</p>
-
-                <form action="{{ url_for('enroll', course_id=course.course_id)}}" method="POST">
-                <button type="submit">Ilmoittaudu</button>
-                </form>
+<title>ilmoitautuminen</title>
+<h2>Ilmoittaudu jollekin seuraavista kursseista:</h2>
+    <br>
         <hr>
-    {% endfor %}
+        {% for course in courses %}
+
+            <b>{{course[1]}}</b>
+            <p>{{course[2]}}</p>
+
+            <form action="{{url_for('enroll', course_id=course.course_id)}}" method="POST">
+                <button type="submit">Ilmoittaudu</button>
+            </form>
+        <hr>
+
+        {% endfor %}
 
 {% endif %}

@@ -87,8 +87,8 @@ def login():
         username = request.form["username"]
         password = request.form["password"]
 
-        sql = text("SELECT id, password FROM users WHERE username=:username")
-        result = db.session.execute(sql, {"username":username})
+        sql_get_user_id = text("SELECT id, password FROM users WHERE username=:username")
+        result = db.session.execute(sql_get_user_id, {"username":username})
         user = result.fetchone()    
         if not user:
             "Invalid username"
@@ -129,15 +129,15 @@ def create_course():
         course_description = request.form["course_description"]
         teacher_username = session.get("username")  
         
-        sql = "SELECT course_id FROM courses WHERE course = :course_name"
-        result = db.session.execute(text(sql), {"course_name": course_name})
+        sql_get_course_id = "SELECT course_id FROM courses WHERE course = :course_name"
+        result = db.session.execute(text(sql_get_course_id), {"course_name": course_name})
         existing_course = result.fetchone()
         
         if existing_course:
             return "There is already a course with this name, please choose a different name."
         
-        sql = "SELECT teacher_id FROM teachers WHERE username = :username"
-        result = db.session.execute(text(sql), {"username": teacher_username})
+        sql_get_teacher_id = "SELECT teacher_id FROM teachers WHERE username = :username"
+        result = db.session.execute(text(sql_get_teacher_id ), {"username": teacher_username})
         teacher_id = result.fetchone()[0]
         
         sql_insert = "INSERT INTO courses (course, course_description, teacher_id) VALUES (:course_name, :course_description, :teacher_id)"
@@ -157,6 +157,73 @@ def course_created():
     
     return render_template("course_created.html")
     
+    
+    
+    
+@app.route("/courses_list_teachers", methods=["GET"])
+def courses_list_teachers():
+    if not is_admin():
+        return "Unauthorized Access"
+    
+    username = session.get("username")
+    
+    sql_get_teacher_id = "SELECT teacher_id FROM teachers WHERE username = :username"
+    result = db.session.execute(text(sql_get_teacher_id), {"username": username})
+    teacher_id = result.fetchone()
+    
+    sql_get_courses = "SELECT course_id, course, course_description FROM courses WHERE teacher_id = :teacher_id ORDER BY course_id"
+    result = db.session.execute(text(sql_get_courses), {"teacher_id": teacher_id[0]})
+    courses = result.fetchall()
+    
+    return render_template("courses_list_teachers.html", courses = courses)
+     
+    
+     
+@app.route("/edit_course/<int:course_id>", methods=["GET", "POST"])      
+def edit_course(course_id):
+    if not is_admin():
+        return "Unauthorized Access"
+    
+    if request.method == "GET":
+    
+        sql_get_course_name = "SELECT course, course_id FROM courses WHERE course_id = :course_id"
+        result = db.session.execute(text(sql_get_course_name), {"course_id": course_id})
+        course = result.fetchone()
+        
+        if course:
+            return render_template("edit_course.html", course = course, course_id = course_id)
+    
+    if request.method == "POST":
+        
+        course_description = request.form.get("course_description")
+        
+        sql_update = "UPDATE courses SET course_description = :course_description WHERE course_id = :course_id"
+        db.session.execute(text(sql_update), {"course_description": course_description, "course_id": course_id})
+        db.session.commit()
+        
+        return redirect(url_for("courses_list_teachers")) 
+
+ 
+
+        
+@app.route("/delete_course/<int:course_id>", methods=["POST"])
+def delete_course(course_id):
+    if not is_admin():
+        return "Unauthorized Access"
+    
+    sql_check_enrollments = "SELECT COUNT(*) FROM enrollments WHERE course_id = :course_id"
+    result = db.session.execute(text(sql_check_enrollments), {"course_id": course_id})
+    student_count = result.scalar()
+
+    if student_count > 0:
+        return "You can't delete this course because there are already students enrolled for this class."
+    
+    sql_delete = "DELETE FROM courses WHERE course_id = :course_id"
+    db.session.execute(text(sql_delete), {"course_id": course_id})
+    db.session.commit()
+    
+    return redirect(url_for("courses_list_teachers"))
+
     
     
 @app.route("/student_front_page")
@@ -187,15 +254,15 @@ def enroll(course_id):
     
     username = session.get("username")
     
-    sql = "SELECT student_id FROM students WHERE username = :username"
-    result = db.session.execute(text(sql), {"username": username})
+    sql_get_student_id = "SELECT student_id FROM students WHERE username = :username"
+    result = db.session.execute(text(sql_get_student_id), {"username": username})
     student_id = result.fetchone()
 
     if student_id:
         sql_check = "SELECT 1 FROM enrollments WHERE student_id = :student_id AND course_id = :course_id"
-        existing_enrollment = db.session.execute(text(sql_check), {"student_id": student_id[0], "course_id": course_id}).fetchone()
+        already_enrolled = db.session.execute(text(sql_check), {"student_id": student_id[0], "course_id": course_id}).fetchone()
         
-        if existing_enrollment:
+        if already_enrolled:
             return "You are already enrolled in this course"
         
     sql_insert = "INSERT INTO enrollments (student_id, course_id) VALUES (:student_id, :course_id)"

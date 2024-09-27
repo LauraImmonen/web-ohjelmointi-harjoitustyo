@@ -1,17 +1,18 @@
-<form action="/new_account" method="POST">
-    Anna nimesi:
-    <input type="text" name="username">
-        <br>
+<title>Luo käyttäjä</title>
+    <form action="/new_account" method="POST">
+        Anna nimesi:
+        <input type="text" name="username">
+            <br>
 
-    Oletko opettaja vai oppilas? 
-    <p>
-    <input type="radio" name="admin" value= "True"> opettaja
-    <input type="radio" name="admin" value= "False"> oppilas
-    </p>
+        Oletko opettaja vai oppilas? 
+        <p>
+        <input type="radio" name="admin" value= "True"> opettaja
+        <input type="radio" name="admin" value= "False"> oppilas
+        </p>
 
-    Luo salasana:
-    <input type="password" name="salasana" required>
-        <br>
+        Luo salasana:
+        <input type="password" name="salasana" required>
+            <br>
 
-    <input type="submit" value="Lähetä">
-</form>
+        <input type="submit" value="Lähetä">
+    </form>
