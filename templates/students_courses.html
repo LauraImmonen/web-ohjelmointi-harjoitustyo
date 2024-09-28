@@ -1,0 +1,49 @@
+{% if session.username %}
+<title>Kurssini</title>
+    <!DOCTYPE html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>My Courses</title>
+        <style>
+            table {
+                width: 100%;
+                border-collapse: collapse;
+            }
+            table, th, td {
+                border: 1px solid black;
+            }
+            th, td {
+                padding: 10px;
+                text-align: left;
+            }
+            th {
+                background-color: #f2f2f2;
+            }
+        </style>
+    </head>
+    <body>
+    
+    <h2>Kurssini</h2>
+    
+    <table>
+        <tr>
+            <th>Kurssi</th>
+            <th>Kurssin sisältö</th>
+            <th>Arvosana</th>
+        </tr>
+        {% for course in courses %}
+        <tr>
+            <td>{{course[0]}}</td>
+            <td>{{course[1]}}</td>
+            <td>{{course[2] or 'Ei vielä arvioitu'}}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    
+    </body>
+    </html>
+        <br>
+            <a href="/student_front_page">Takaisin etusivulle</a>
+    
+{% endif %}

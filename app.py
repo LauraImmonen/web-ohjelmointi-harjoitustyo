@@ -226,6 +226,7 @@ def delete_course(course_id):
 
     
     
+    
 @app.route("/student_front_page")
 def student_front_page():
     if not is_admin():
@@ -233,6 +234,35 @@ def student_front_page():
     else:
         return "Unauthorized Access" 
     
+
+
+@app.route("/students_courses", methods = ["GET"])
+def students_courses():
+    if is_admin():
+        return "Unauthorized Access"
+   
+    username = session.get("username")
+    
+    sql_get_student_id = "SELECT student_id FROM students WHERE username = :username"
+    result = db.session.execute(text(sql_get_student_id), {"username": username})
+    student_id = result.fetchone()[0]
+    
+    
+    sql_get_student_courses = """
+        SELECT courses.course, courses.course_description, grades.grade
+        FROM courses
+        JOIN enrollments ON courses.course_id = enrollments.course_id
+        JOIN students ON enrollments.student_id = students.student_id
+        LEFT JOIN grades ON courses.course_id = grades.course_id 
+        AND students.student_id = grades.student_id
+        WHERE students.student_id = :student_id;
+    """
+    
+    result = db.session.execute(text(sql_get_student_courses), {"student_id": student_id})
+    courses = result.fetchall()
+
+    return render_template("students_courses.html", courses = courses)
+
 
 
 @app.route("/apply_for_course")

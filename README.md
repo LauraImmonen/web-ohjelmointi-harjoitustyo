@@ -15,7 +15,7 @@ admin = opettaja ja user = opiskelija.
 
 Tämä on ensimmäinen web-sovellukseni, joten koodini on varmasti vielä kömpelöä. Otan mielelläni vastaan vinkkejä/palautetta siitä, miten pystyisin parantamaan koodini toimivuutta ja luettavuutta. 
 
-Tällä hetkellä sovelluksessa pystyy luomaan käyttäjän, kirjautumaan sisään sovellukseen ja opettajilla ja opiskelijoilla on omat etusivunsa. Opettaja pystyy luomaan, muokkaamaan ja poistamaan kursseja, ja oppilas pystyy ilmoittautumaan niille. Muita toimintoja en ole vielä ehtinyt tekemään. 
+Tällä hetkellä sovelluksessa pystyy luomaan käyttäjän, kirjautumaan sisään sovellukseen ja opettajilla ja opiskelijoilla on omat etusivunsa. Opettaja pystyy luomaan, muokkaamaan ja poistamaan kursseja, ja oppilas pystyy ilmoittautumaan niille, sekä tarkastelemaan omia kurssejaan. Muita toimintoja en ole vielä ehtinyt tekemään. 
 
 
 # Asennusohjeet
