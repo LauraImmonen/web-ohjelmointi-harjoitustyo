@@ -1,0 +1,15 @@
+{% if session.username %} {% extends "teachers_template.html" %} {% block title
+%}Poista Opiskelija{% endblock %} {% block content %}
+
+<h2>Oletko varma että haluat poistaa opiskelijan kurssilta?</h2>
+
+<form
+  action="{{ url_for('delete_student_final', course_id=course_id, student_id=student_id) }}"
+  method="POST"
+>
+  <button type="submit">Kyllä, poista opiskelija</button>
+</form>
+
+<a href="{{ url_for('delete_student', course_id=course_id) }}">Takaisin</a>
+
+{% endblock %} {% endif %}

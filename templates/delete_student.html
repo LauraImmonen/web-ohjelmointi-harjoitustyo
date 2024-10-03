@@ -1,0 +1,31 @@
+{% if session.username %} {% extends "teachers_template.html" %} {% block title
+%}Poista opiskelijoita kurssilta{% endblock %} {% block content %}
+
+<h2>Poista opiskelijoita kurssilta: "{{ course_name }}"</h2>
+<form
+  action="{{ url_for('delete_student_confirm', course_id=course_id) }}"
+  method="POST"
+>
+  <table>
+    <tr>
+      <th>Opiskelija</th>
+      <th>Toiminto</th>
+    </tr>
+    {% for student in students %}
+    <tr>
+      <td>{{ student.username }}</td>
+      <td>
+        <button
+          type="submit"
+          name="student_id"
+          value="{{ student.student_id }}"
+        >
+          Poista
+        </button>
+      </td>
+    </tr>
+    {% endfor %}
+  </table>
+</form>
+
+{% endblock %} {% endif %}

@@ -203,8 +203,23 @@ def edit_course(course_id):
         
         return redirect(url_for("courses_list_teachers")) 
 
- 
 
+
+@app.route("/confirm_delete_course/<int:course_id>", methods=["GET","POST"])
+def confirm_delete_course(course_id):
+    if not is_admin():
+        return "Unauthorized Access"
+    
+    sql_get_course = "SELECT course, course_description FROM courses WHERE course_id = :course_id"
+    result = db.session.execute(text(sql_get_course), {"course_id": course_id})
+    course = result.fetchone()
+
+    if not course:
+        return "Course not found"
+
+    return render_template("delete_course.html", course_id=course_id, course=course)
+
+        
         
 @app.route("/delete_course/<int:course_id>", methods=["POST"])
 def delete_course(course_id):
@@ -224,8 +239,111 @@ def delete_course(course_id):
     
     return redirect(url_for("courses_list_teachers"))
 
+
     
+@app.route("/grade_course/<int:course_id>", methods = ["GET"])
+def grade_course(course_id):
+    if not is_admin():
+        return "Unauthorized Access"
     
+    sql_get_course_name = "SELECT course FROM courses WHERE course_id = :course_id"
+    result = db.session.execute(text(sql_get_course_name), {"course_id": course_id})
+    course_name = result.fetchone()
+    
+    sql_get_students = """
+        SELECT s.student_id, u.username
+        FROM enrollments e
+        JOIN students s ON e.student_id = s.student_id
+        JOIN users u ON s.username = u.username
+        WHERE e.course_id = :course_id"""
+    result = db.session.execute(text(sql_get_students), {"course_id" : course_id})
+    students = result.fetchall()
+    
+    return render_template("grade_course.html", course_id = course_id, course_name = course_name[0], students = students)
+        
+        
+        
+
+@app.route("/save_grades/<int:course_id>", methods=["POST"])
+def save_grades(course_id):
+    if not is_admin():
+        return "Unauthorized Access"
+
+    username = session.get('username')
+    
+    sql_get_teacher_id = "SELECT teacher_id FROM teachers WHERE username = :username"
+    result = db.session.execute(text(sql_get_teacher_id), {"username": username})
+    teacher_id = result.fetchone()
+
+    teacher_id = teacher_id[0]
+
+    grades = request.form.getlist('grades')
+
+    for grade_entry in grades:
+        student_id, grade = grade_entry.split(',')
+        
+        sql_check_existing_grade = """SELECT COUNT(*) FROM grades WHERE student_id = :student_id AND course_id = :course_id"""
+        existing_grade_count = db.session.execute(text(sql_check_existing_grade),{"student_id": student_id, "course_id": course_id}).scalar()
+        
+        if existing_grade_count > 0:
+            return "Tälle opiskelijalle on jo annettu arvosana kyseisestä kurssista."
+
+        sql_insert_grade = """
+            INSERT INTO grades (student_id, course_id, teacher_id, grade)
+            VALUES (:student_id, :course_id, :teacher_id, :grade)"""
+        db.session.execute(text(sql_insert_grade), {"student_id": student_id, "course_id": course_id, "teacher_id": teacher_id, "grade": grade})
+
+    db.session.commit()
+    
+    return redirect(url_for('courses_list_teachers'))
+
+
+
+
+@app.route("/delete_student/<int:course_id>", methods=["GET"])
+def delete_student(course_id):
+    if not is_admin():
+        return "Unauthorized Access"
+    
+    sql_get_course_name = "SELECT course FROM courses WHERE course_id = :course_id"
+    result = db.session.execute(text(sql_get_course_name), {"course_id": course_id})
+    course_name = result.fetchone()[0]
+    
+    sql_get_students = """
+        SELECT s.student_id, u.username
+        FROM enrollments e
+        JOIN students s ON e.student_id = s.student_id
+        JOIN users u ON s.username = u.username
+        WHERE e.course_id = :course_id"""
+    result = db.session.execute(text(sql_get_students), {"course_id" : course_id})
+    students = result.fetchall()
+
+    return render_template("delete_student.html", course_name=course_name, students=students, course_id=course_id)
+
+
+
+@app.route("/delete_student_confirm/<int:course_id>", methods=["POST"])
+def delete_student_confirm(course_id):
+    if not is_admin():
+        return "Unauthorized Access"
+    
+    student_id = request.form.get('student_id')
+
+    return render_template("confirm_delete_student.html", course_id=course_id, student_id=student_id)
+
+
+
+@app.route("/delete_student_final/<int:course_id>/<int:student_id>", methods=["POST"])
+def delete_student_final(course_id, student_id):
+    if not is_admin():
+        return "Unauthorized Access"
+
+    sql_delete_enrollment = "DELETE FROM enrollments WHERE course_id = :course_id AND student_id = :student_id"
+    db.session.execute(text(sql_delete_enrollment), {"course_id": course_id, "student_id": student_id})
+    db.session.commit()
+
+    return redirect(url_for('delete_student', course_id=course_id))
+
     
 @app.route("/student_front_page")
 def student_front_page():

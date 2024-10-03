@@ -1,22 +1,16 @@
 {% if session.username %} {% extends "teachers_template.html" %} {% block title
 %} Opettajan etusivu {%endblock %} {%block content %}
 
-<h2>Opettajan etusivu</h2>
-
-<p>
-  Tervetuloa
-  <i
-    >opettajan etusivulle!<i>
-      <p>
+<h2>
+  Tervetuloa opettajan etusivulle!
+    </h2>
         <a href="/create_course">Luo uusi kurssi</a>
         <br />
         <br />
         <a href="/courses_list_teachers"
           >Kurssini<a>
             <br />
-            <br />
-            <a href="/logout">Kirjaudu ulos</a>
-
+            
             {%endblock%}{% endif %}</a
           ></a
         >

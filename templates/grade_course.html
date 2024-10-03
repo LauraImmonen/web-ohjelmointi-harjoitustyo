@@ -1,0 +1,31 @@
+{% if session.username %} {% extends "teachers_template.html" %} {% block title
+%}Kurssin Arviointi{% endblock %} {% block content %}
+
+<h2>Arvioi kurssi: "{{ course_name }}"</h2>
+<form action="{{ url_for('save_grades', course_id=course_id) }}" method="POST">
+  <table>
+    <tr>
+      <th>Opiskelija</th>
+      <th>Arvosana</th>
+    </tr>
+    {% for student in students %}
+    <tr>
+      <td>{{ student.username }}</td>
+      <td>
+        <select name="grades" required>
+          <option value="{{ student.student_id }},0">Hylätty</option>
+          <option value="{{ student.student_id }},1">1</option>
+          <option value="{{ student.student_id }},2">2</option>
+          <option value="{{ student.student_id }},3">3</option>
+          <option value="{{ student.student_id }},4">4</option>
+          <option value="{{ student.student_id }},5">5</option>
+        </select>
+      </td>
+    </tr>
+    {% endfor %}
+  </table>
+  <br />
+  <button type="submit">Tallenna</button>
+</form>
+
+{% endblock %} {% endif %}
