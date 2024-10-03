@@ -1,13 +1,8 @@
-{% if session.username %}
-<title>Kurssi luotu</title>
-<h2>Kurssi luotu onnistuneesti!</h2>
-        <br>
-    <a href="/create_course">Luo toinen kurssi</a>
-        <br>
-        <br>
-    <a href="/teacher_front_page">Palaa opettajan etusivulle</a>
-        <br>
-        <br>
-    <a href="/logout">Kirjaudu ulos</a>
+{% if session.username %} {% extends "teachers_template.html" %} {% block title
+%} Kurssi luotu {%endblock %} {%block content %}
 
-{% endif %}
+<h2>Kurssi luotu onnistuneesti!</h2>
+<br />
+<a href="/create_course">Luo toinen kurssi</a>
+<br />
+{%endblock%} {% endif %}

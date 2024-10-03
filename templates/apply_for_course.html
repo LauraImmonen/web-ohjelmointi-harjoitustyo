@@ -1,18 +1,16 @@
-{% if session.username %}
-<title>ilmoitautuminen</title>
+{% if session.username %} {% extends "students_template.html" %} {% block title
+%} Ilmoitautuminen {%endblock %} {%block content %}
+
 <h2>Ilmoittaudu jollekin seuraavista kursseista:</h2>
-    <br>
-        <hr>
-        {% for course in courses %}
+<br />
 
-            <b>{{course[1]}}</b>
-            <p>{{course[2]}}</p>
+{% for course in courses %}
 
-            <form action="{{url_for('enroll', course_id=course.course_id)}}" method="POST">
-                <button type="submit">Ilmoittaudu</button>
-            </form>
-        <hr>
+<b>{{course[1]}}</b>
+<p>{{course[2]}}</p>
 
-        {% endfor %}
+<form action="{{url_for('enroll', course_id=course.course_id)}}" method="POST">
+  <button type="submit">Ilmoittaudu</button>
+</form>
 
-{% endif %}
+{% endfor %} {%endblock%} {% endif %}

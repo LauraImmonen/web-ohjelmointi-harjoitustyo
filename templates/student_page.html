@@ -1,17 +1,24 @@
-{% if session.username %}
+{% if session.username %} {% extends "students_template.html" %} {% block title
+%} Opiskelijan etusivu {%endblock %} {%block content %}
 
-<title>Opiskelijan etusivu</title>
-    
-    <h2>Opiskelijan etusivu</h2>
-    
-        <p>Tervetuloa <i>opiskelijan etusivulle!<i> <p> 
-            <br>
+<h2>Opiskelijan etusivu</h2>
+
+<p>
+  Tervetuloa
+  <i
+    >opiskelijan etusivulle!<i>
+      <p>
+        <br />
         <a href="/apply_for_course">Ilmoittaudu kurssille</a>
-            <br>
-            <br>
+        <br />
+        <br />
         <a href="/students_courses">Kurssini</a>
-            <br>
-            <br>
+        <br />
+        <br />
         <a href="/logout">Kirjaudu ulos</a>
 
-{% endif %}
+        {%endblock %}{% endif %}
+      </p></i
+    ></i
+  >
+</p>

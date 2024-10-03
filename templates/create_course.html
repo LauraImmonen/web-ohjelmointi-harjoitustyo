@@ -1,16 +1,14 @@
-{% if session.username %}
-<title>Luo kurssi</title>
-    <h2>Luo uusi kurssi:</h2>
+{% if session.username %} {% extends "teachers_template.html" %} {% block
+title%} Luo kurssi {%endblock %} {%block content %}
+<h2>Luo uusi kurssi:</h2>
 
-        <form action="/create_course" method="POST">
-            <label>Kurssin nimi:</label>
-            <input type="text" name="course_name" required>
-            
-            <label>Kurssin kuvaus:</label>
-            <textarea name="course_description" required></textarea>
-            
-            <input type="submit" value="Luo kurssi">
+<form action="/create_course" method="POST">
+  <label>Kurssin nimi:</label>
+  <input type="text" name="course_name" required />
 
-        </form>
-        
-{% endif %}
+  <label>Kurssin kuvaus:</label>
+  <textarea name="course_description" required></textarea>
+
+  <input type="submit" value="Luo kurssi" />
+</form>
+{%endblock%} {% endif %}

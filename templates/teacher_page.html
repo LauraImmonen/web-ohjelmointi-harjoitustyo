@@ -1,17 +1,26 @@
-{% if session.username %}
+{% if session.username %} {% extends "teachers_template.html" %} {% block title
+%} Opettajan etusivu {%endblock %} {%block content %}
 
-<title>Opettajan etusivu</title>
-    <h2>Opettajan etusivu</h2>
+<h2>Opettajan etusivu</h2>
 
-        <p>Tervetuloa <i>opettajan etusivulle!<i> <p> 
-
-            <a href="/create_course">Luo uusi kurssi</a>
-                <br>
-                <br>
-            <a href="/courses_list_teachers">Kurssini<a>
-                <br>
-                <br>
+<p>
+  Tervetuloa
+  <i
+    >opettajan etusivulle!<i>
+      <p>
+        <a href="/create_course">Luo uusi kurssi</a>
+        <br />
+        <br />
+        <a href="/courses_list_teachers"
+          >Kurssini<a>
+            <br />
+            <br />
             <a href="/logout">Kirjaudu ulos</a>
 
-
-{% endif %}
+            {%endblock%}{% endif %}</a
+          ></a
+        >
+      </p></i
+    ></i
+  >
+</p>
