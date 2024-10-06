@@ -15,7 +15,7 @@ admin = opettaja ja user = opiskelija.
 
 Tämä on ensimmäinen web-sovellukseni, joten koodini on varmasti vielä hieman kömpelöä. Otan mielelläni vastaan vinkkejä/palautetta siitä, miten pystyisin parantamaan koodini toimivuutta ja ymmärrettävyyttä.
 
-Tällä hetkellä sovelluksessa pystyy tekemään kaikkia aikaisemmin kuvailemiani toimintoja, mutta sovelluksen ulkoasussa ja koodin rakenteessa on vielä puitteita.
+Tällä hetkellä sovelluksessa pystyy tekemään kaikkia aikaisemmin kuvailemiani toimintoja, mutta sovelluksen ulkoasussa on vielä puitteita.
 
 # Asennusohjeet
 

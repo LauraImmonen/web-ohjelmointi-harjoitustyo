@@ -3,7 +3,7 @@
 
 <h2>Poista opiskelijoita kurssilta: "{{ course_name }}"</h2>
 <form
-  action="{{ url_for('delete_student_confirm', course_id=course_id) }}"
+  action="{{ url_for('teacher_routes.delete_student_confirm', course_id=course_id) }}"
   method="POST"
 >
   <table>

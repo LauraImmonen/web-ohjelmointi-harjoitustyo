@@ -1,11 +1,14 @@
 {% if session.username %} {% extends "teachers_template.html" %} {% block title
 %} Kurssinin poistaminen {%endblock %} {%block content %}
 
-<h2>Haluatko varmasti poistaa kurssin?:</h2>
+<h2>Haluatko varmasti poistaa kurssin? "{{ course_name }}"</h2>
 
-<form action="{{url_for('delete_course', course_id=course_id)}}" method="POST">
+<form
+  action="{{url_for('teacher_routes.delete_course', course_id = course_id)}}"
+  method="POST"
+>
   <button type="submit">Kyllä, poista kurssi</button>
 </form>
-<br />
-<a href="{{ url_for('courses_list_teachers') }}">Takaisin</a>
+<div class="spacing"></div>
+<a href="{{ url_for('teacher_routes.courses_list_teachers') }}">Takaisin</a>
 {%endblock%} {% endif %}

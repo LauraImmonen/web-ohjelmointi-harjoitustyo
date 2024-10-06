@@ -1,5 +1,5 @@
 {% if session.username %} {% extends "students_template.html" %} {% block title
-%}Kurssini{% endblock %} {% block content %}
+%} Kurssini {% endblock %} {% block content %}
 <!DOCTYPE html>
 <html lang="fi">
   <head>
@@ -46,7 +46,11 @@
       <tr>
         <td>{{ course[0] }}</td>
         <td>{{ course[1] }}</td>
-        <td>{{ course[2] or 'Ei vielä arvioitu' }}</td>
+        <td>
+          {% if course[2] is not none %} {% if course[2] == 0 %} Hylätty {% else
+          %} {{ course[2] }} {% endif %} {% else %} Ei vielä arvioitu {% endif
+          %}
+        </td>
       </tr>
       {% endfor %}
     </table>
