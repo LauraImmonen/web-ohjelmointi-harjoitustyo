@@ -8,6 +8,7 @@
   method="POST"
 >
   <button type="submit">Kyllä, poista kurssi</button>
+  <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
 </form>
 <div class="spacing"></div>
 <a href="{{ url_for('teacher_routes.courses_list_teachers') }}">Takaisin</a>

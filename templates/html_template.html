@@ -10,7 +10,6 @@
     />
     <title>{% block title %}{% endblock %}</title>
     <style>
-      /* Styling for the flash messages */
       .flash-messages {
         margin: 20px 0;
         padding: 15px;
@@ -19,17 +18,13 @@
       .alert {
         padding: 15px;
         border-radius: 5px;
-        margin-bottom: 20px; /* Adds spacing between flash message and page content */
-        color: #333; /* Text color */
-        background-color: #fff3cd; /* Light yellow background */
-        border: 1px solid #ffeeba; /* Light yellow border */
+        margin-bottom: 20px;
+        color: #333;
+        background-color: #fff3cd;
+        border: 1px solid #ffeeba;
         position: relative;
         opacity: 1;
         transition: opacity 0.5s ease-in-out;
-      }
-
-      /* Optional: Add a subtle box-shadow for a 'board' effect */
-      .alert {
         box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
       }
     </style>

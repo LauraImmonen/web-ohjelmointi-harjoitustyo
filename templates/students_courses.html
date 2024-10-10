@@ -1,60 +1,58 @@
 {% if session.username %} {% extends "students_template.html" %} {% block title
 %} Kurssini {% endblock %} {% block content %}
-<!DOCTYPE html>
-<html lang="fi">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>My Courses</title>
-    <style>
-      .container table {
-        width: 100%;
-        border-collapse: collapse;
-      }
-      .container table,
-      .container th,
-      .container td {
-        border: 1px solid black;
-      }
-      .container th,
-      .container td {
-        padding: 10px;
-        text-align: left;
-      }
-      .container th {
-        background-color: white;
-        color: black;
-      }
-      .container tr:nth-child(even) {
-        background-color: #d3d3d3;
-      }
-      .container tr:nth-child(odd) {
-        background-color: white;
-      }
-    </style>
-  </head>
-  <body>
-    <h2>Kurssini</h2>
 
-    <table>
-      <tr>
-        <th>Kurssi</th>
-        <th>Kurssin sisältö</th>
-        <th>Arvosana</th>
-      </tr>
-      {% for course in courses %}
-      <tr>
-        <td>{{ course[0] }}</td>
-        <td>{{ course[1] }}</td>
-        <td>
-          {% if course[2] is not none %} {% if course[2] == 0 %} Hylätty {% else
-          %} {{ course[2] }} {% endif %} {% else %} Ei vielä arvioitu {% endif
-          %}
-        </td>
-      </tr>
-      {% endfor %}
-    </table>
-  </body>
-  <br />
-  {% endblock %} {% endif %}
-</html>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Kurssini</title>
+  <style>
+    .container table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .container table,
+    .container th,
+    .container td {
+      border: 1px solid black;
+    }
+    .container th,
+    .container td {
+      padding: 10px;
+      text-align: left;
+    }
+    .container th {
+      background-color: white;
+      color: black;
+    }
+    .container tr:nth-child(even) {
+      background-color: #d3d3d3;
+    }
+    .container tr:nth-child(odd) {
+      background-color: white;
+    }
+  </style>
+</head>
+<body>
+  <h2>Kurssini</h2>
+
+  <table>
+    <tr>
+      <th>Kurssi</th>
+      <th>Kurssin sisältö</th>
+      <th>Arvosana</th>
+    </tr>
+    {% for course in courses %}
+    <tr>
+      <td>{{ course[0] }}</td>
+      <td>{{ course[1] }}</td>
+      <td>
+        {% if course[2] is not none %} {% if course[2] == 0 %} Hylätty {% else
+        %} {{ course[2] }} {% endif %} {% else %} Ei vielä arvioitu {% endif %}
+      </td>
+    </tr>
+    {% endfor %}
+  </table>
+</body>
+<br />
+{% endblock %} {% endif %}

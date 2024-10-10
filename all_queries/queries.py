@@ -1,12 +1,12 @@
 from db import db
 from sqlalchemy.sql import text
 
-        
+
 def new_user(username, hash_value, admin):
     sql_insert = "INSERT INTO users (username, password, admin) VALUES (:username, :password, :admin)"
     db.session.execute(text(sql_insert), {"username": username, "password": hash_value, "admin": admin})
     db.session.commit()
-    
+
 def get_user_id(username):
     sql_get_user_id = "SELECT id FROM users WHERE username=:username"
     result = db.session.execute(text(sql_get_user_id), {"username": username})
@@ -33,7 +33,7 @@ def get_user_admin_status(username):
 def get_user_by_username(username):
     sql_get_user = text("SELECT id, password FROM users WHERE username = :username")
     result = db.session.execute(sql_get_user, {"username": username})
-    return result.fetchone() 
+    return result.fetchone()
 
 def get_course_id(course_name):
     sql_get_course_id = "SELECT course_id FROM courses WHERE course = :course_name"

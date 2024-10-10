@@ -12,7 +12,7 @@ def get_student_courses(student_id):
         FROM courses
         JOIN enrollments ON courses.course_id = enrollments.course_id
         JOIN students ON enrollments.student_id = students.student_id
-        LEFT JOIN grades ON courses.course_id = grades.course_id 
+        LEFT JOIN grades ON courses.course_id = grades.course_id
         AND students.student_id = grades.student_id
         WHERE students.student_id = :student_id;
     """

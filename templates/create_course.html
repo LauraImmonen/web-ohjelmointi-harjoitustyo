@@ -10,5 +10,7 @@ title%} Luo kurssi {%endblock %} {%block content %}
   <textarea name="course_description" required></textarea>
 
   <input type="submit" value="Luo kurssi" />
+
+  <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
 </form>
 {%endblock%} {% endif %}

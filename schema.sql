@@ -1,7 +1,7 @@
 CREATE TABLE users (
     id SERIAL PRIMARY KEY,
     username TEXT UNIQUE,
-    password TEXT, 
+    password TEXT,
     admin TEXT
 );
 
@@ -34,7 +34,7 @@ CREATE TABLE grades (
     grade INT
 );
 
-CREATE TABLE enrollments (  
+CREATE TABLE enrollments (
     course_id INT REFERENCES courses(course_id),
     student_id INT REFERENCES students(student_id),
     PRIMARY KEY (course_id, student_id)
