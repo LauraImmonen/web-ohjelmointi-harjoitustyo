@@ -3,7 +3,8 @@ from sqlalchemy.sql import text
 
 
 def new_user(username, hash_value, admin):
-    sql_insert = "INSERT INTO users (username, password, admin) VALUES (:username, :password, :admin)"
+    sql_insert = """INSERT INTO users (username, password, admin)
+    VALUES (:username, :password, :admin)"""
     db.session.execute(text(sql_insert), {"username": username, "password": hash_value, "admin": admin})
     db.session.commit()
 

@@ -2,7 +2,7 @@
 title%} Luo kurssi {%endblock %} {%block content %}
 <h2>Luo uusi kurssi:</h2>
 
-<form action="/create_course" method="POST">
+<form action="/create_course" method="POST" onsubmit="return check(this)">
   <label>Kurssin nimi:</label>
   <input type="text" name="course_name" required />
 

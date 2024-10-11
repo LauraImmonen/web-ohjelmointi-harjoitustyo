@@ -52,5 +52,18 @@
         });
       }, 4000);
     </script>
+    <script>
+      function check(form) {
+        if (form.username.value.length > 20) {
+          alert("Käyttäjänimi on liian pitkä!");
+          return false;
+        }
+        if (form.salasana.value.length > 15) {
+          alert("Salasana on liian pitkä!");
+          return false;
+        }
+        return true;
+      }
+    </script>
   </body>
 </html>

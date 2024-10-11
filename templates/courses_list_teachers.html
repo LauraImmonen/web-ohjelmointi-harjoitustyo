@@ -19,9 +19,8 @@
   method="POST"
 >
   <button type="submit">Poista kurssi</button>
+  <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
 </form>
-
-<input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
 
 <form
   action="{{ url_for('teacher_routes.grade_course', course_id=course[0]) }}"

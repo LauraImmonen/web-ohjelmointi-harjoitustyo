@@ -6,6 +6,7 @@
 <form
   method="POST"
   action="{{ url_for('teacher_routes.edit_course', course_id=course_id) }}"
+  onsubmit="return check(this)"
 >
   <label for="course_name">Kurssi:</label>
   <input
@@ -13,6 +14,7 @@
     id="course_name"
     name="course_name"
     value="{{ course_name }}"
+    required
   />
 
   <label for="course_description">Kurssin kuvaus:</label>
@@ -21,6 +23,7 @@
     id="course_description"
     name="course_description"
     value="{{ course_description }}"
+    required
   />
 
   <button type="submit">Tallenna muutokset</button>

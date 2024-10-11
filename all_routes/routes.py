@@ -14,8 +14,7 @@ def index():
 @main_routes.route("/account", methods=["POST"])
 def have_account():
     if "csrf_token" not in session:
-        session["csrf_token"] = secrets.token_hex(16)
-
+            session["csrf_token"] = secrets.token_hex(16)
     if session["csrf_token"] != request.form["csrf_token"]:
         abort(403)
 
@@ -29,6 +28,7 @@ def have_account():
 @main_routes.route("/new_account", methods=["GET", "POST"])
 def new_account():
     if request.method == 'POST':
+
         if session["csrf_token"] != request.form["csrf_token"]:
             abort(403)
 
@@ -50,10 +50,8 @@ def new_account():
         else:
             queries.add_student(user_id, username)
 
-        session["csrf_token"] = secrets.token_hex(16)
         return redirect(url_for("main_routes.login"))
 
-    session["csrf_token"] = secrets.token_hex(16)
     return render_template("create_user.html")
 
 
@@ -73,8 +71,6 @@ def is_admin():
 
 @main_routes.route("/login", methods=["GET", "POST"])
 def login():
-    if "csrf_token" not in session:
-        session["csrf_token"] = secrets.token_hex(16)
 
     if request.method == "POST":
         if session["csrf_token"] != request.form["csrf_token"]:
@@ -102,7 +98,6 @@ def login():
                 flash("Väärä salasana!")
                 return redirect(url_for("main_routes.login"))
 
-    session["csrf_token"] = secrets.token_hex(16)
     return render_template("login_html.html")
 
 

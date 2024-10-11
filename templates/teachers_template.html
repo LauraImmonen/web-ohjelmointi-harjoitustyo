@@ -47,7 +47,6 @@
     </div>
     {% endif %} {% endwith %} {% block content %}{% endblock %}
   </div>
-
   <script>
     setTimeout(function () {
       var flashMessages = document.querySelectorAll(".alert");
@@ -58,5 +57,18 @@
         }, 500);
       });
     }, 4000);
+  </script>
+  <script>
+    function check(form) {
+      if (form.course_name.value.length > 30) {
+        alert("Kurssinimi on liian pitkä!");
+        return false;
+      }
+      if (form.course_description.value.length > 50) {
+        alert("Teksti on liian pitkä!");
+        return false;
+      }
+      return true;
+    }
   </script>
 </body>

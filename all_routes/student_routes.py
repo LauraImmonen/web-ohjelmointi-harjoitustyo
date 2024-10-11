@@ -86,7 +86,6 @@ def enroll(course_id):
             return redirect(url_for("student_routes.apply_for_course"))
 
     student_queries.enroll_for_course(student_id, course_id)
-
     return redirect(url_for("student_routes.enrollment_successful"))
 
 

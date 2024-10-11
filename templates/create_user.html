@@ -1,8 +1,8 @@
 {% extends "html_template.html" %} {% block title %} Luo käyttäjä {%endblock %}
 {%block content %}
-<form action="/new_account" method="POST">
+<form action="/new_account" method="POST" onsubmit="return check(this)">
   Anna nimesi:
-  <input type="text" name="username" />
+  <input type="text" name="username" required />
   <br />
 
   Oletko opettaja vai oppilas?
@@ -15,7 +15,7 @@
   <input type="password" name="salasana" required />
   <br />
 
-  <input type="submit" value="Lähetä" />
+  <input type="submit" value="Lähetä" required />
   <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
 </form>
 {%endblock%}

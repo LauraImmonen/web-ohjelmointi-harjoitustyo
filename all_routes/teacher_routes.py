@@ -119,7 +119,7 @@ def edit_course(course_id):
         return redirect(url_for('teacher_routes.courses_list_teachers'))
 
 
-@teacher_routes.route("/confirm_delete_course/<int:course_id>", methods=["GET","POST"])
+@teacher_routes.route("/confirm_delete_course/<int:course_id>", methods=["GET", "POST"])
 def confirm_delete_course(course_id):
     if request.method == "POST":
         if session["csrf_token"] != request.form["csrf_token"]:
@@ -209,7 +209,6 @@ def save_grades(course_id):
 def delete_student(course_id):
     if not is_admin():
         return "Luvaton pääsy!"
-
 
     course_name = queries.get_coursename_by_id(course_id)[0]
 
