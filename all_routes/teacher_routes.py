@@ -79,9 +79,7 @@ def courses_list_teachers():
         return "Luvaton pääsy!"
 
     username = session.get("username")
-
     teacher_id = teacher_queries.get_teacher_id(username)
-
     courses = teacher_queries.get_course_by_teacher_id(teacher_id)
 
     if not courses:
@@ -90,10 +88,20 @@ def courses_list_teachers():
     return render_template("courses_list_teachers.html", courses=courses)
 
 
+def check_if_course_teacher(course_id, teacher_id):
+    return teacher_queries.check_if_course_teacher(course_id, teacher_id)
+
+
 @teacher_routes.route("/edit_course/<int:course_id>", methods=["GET", "POST"])
 def edit_course(course_id):
     if not is_admin():
         return "Luvaton pääsy!"
+
+    teacher_username = session.get("username")
+    teacher_id = teacher_queries.get_teacher_id(teacher_username)
+
+    if not check_if_course_teacher(course_id, teacher_id):
+        return "luvaton pääsy!"
 
     if request.method == "GET":
         course = queries.get_coursename_by_id(course_id)
@@ -128,6 +136,12 @@ def confirm_delete_course(course_id):
     if not is_admin():
         return "Luvaton pääsy!"
 
+    teacher_username = session.get("username")
+    teacher_id = teacher_queries.get_teacher_id(teacher_username)
+
+    if not check_if_course_teacher(course_id, teacher_id):
+        return "luvaton pääsy!"
+
     course = queries.get_course_name_description(course_id)
     course_name = queries.get_coursename_by_id(course_id)[0]
 
@@ -144,6 +158,12 @@ def delete_course(course_id):
 
     if not is_admin():
         return "Luvaton pääsy!"
+
+    teacher_username = session.get("username")
+    teacher_id = teacher_queries.get_teacher_id(teacher_username)
+
+    if not check_if_course_teacher(course_id, teacher_id):
+        return "luvaton pääsy!"
 
     student_count = teacher_queries.check_enrollments(course_id)
     student_count = teacher_queries.check_enrollments(course_id)
@@ -163,6 +183,12 @@ def delete_course(course_id):
 def grade_course(course_id):
     if not is_admin():
         return "Luvaton pääsy!"
+
+    teacher_username = session.get("username")
+    teacher_id = teacher_queries.get_teacher_id(teacher_username)
+
+    if not check_if_course_teacher(course_id, teacher_id):
+        return "luvaton pääsy!"
 
     course_name = queries.get_coursename_by_id(course_id)
 
@@ -189,6 +215,9 @@ def save_grades(course_id):
 
     grades = request.form.getlist('grades')
 
+    if not check_if_course_teacher(course_id, teacher_id):
+        return "luvaton pääsy!"
+
     for grade_entry in grades:
         student_id, grade = grade_entry.split(',')
 
@@ -210,6 +239,12 @@ def delete_student(course_id):
     if not is_admin():
         return "Luvaton pääsy!"
 
+    teacher_username = session.get("username")
+    teacher_id = teacher_queries.get_teacher_id(teacher_username)
+
+    if not check_if_course_teacher(course_id, teacher_id):
+        return "luvaton pääsy!"
+
     course_name = queries.get_coursename_by_id(course_id)[0]
 
     students = teacher_queries.get_students_by_course_id(course_id)
@@ -229,6 +264,12 @@ def delete_student_confirm(course_id):
     if not is_admin():
         return "Luvaton pääsy!"
 
+    teacher_username = session.get("username")
+    teacher_id = teacher_queries.get_teacher_id(teacher_username)
+
+    if not check_if_course_teacher(course_id, teacher_id):
+        return "luvaton pääsy!"
+
     student_id = request.form.get('student_id')
 
     if teacher_queries.check_existing_grade(student_id, course_id):
@@ -245,6 +286,12 @@ def delete_student_final(course_id, student_id):
 
     if not is_admin():
         return "Luvaton pääsy!"
+
+    teacher_username = session.get("username")
+    teacher_id = teacher_queries.get_teacher_id(teacher_username)
+
+    if not check_if_course_teacher(course_id, teacher_id):
+        return "luvaton pääsy!"
 
     teacher_queries.delete_enrollment(course_id, student_id)
 

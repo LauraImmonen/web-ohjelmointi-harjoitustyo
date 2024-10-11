@@ -2,7 +2,10 @@ from db import db
 from sqlalchemy.sql import text
 
 def get_student_id(username):
-    sql_get_student_id = "SELECT student_id FROM students WHERE username = :username"
+    sql_get_student_id = """
+    SELECT student_id
+    FROM students
+    WHERE username = :username"""
     result = db.session.execute(text(sql_get_student_id), {"username":username})
     return result.fetchone()
 
@@ -24,11 +27,16 @@ def get_course_information():
     return result.fetchall()
 
 def check_enrollment(student_id, course_id):
-    sql_check = """SELECT 1 FROM enrollments WHERE student_id = :student_id
+    sql_check = """
+    SELECT 1 FROM enrollments
+    WHERE student_id = :student_id
     AND course_id = :course_id"""
     return db.session.execute(text(sql_check), {"student_id":student_id[0], "course_id":course_id}).fetchone()
 
 def enroll_for_course(student_id, course_id):
-    sql_insert = "INSERT INTO enrollments (student_id, course_id) VALUES (:student_id, :course_id)"
+    sql_insert = """
+    INSERT INTO enrollments
+    (student_id, course_id)
+    VALUES (:student_id, :course_id)"""
     db.session.execute(text(sql_insert), {"student_id":student_id[0], "course_id":course_id})
     db.session.commit()
