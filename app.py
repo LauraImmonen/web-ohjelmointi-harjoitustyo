@@ -18,6 +18,10 @@ app.register_blueprint(student_routes)
 def page_not_found(e):
     return redirect(url_for('main_routes.index'))
 
+@app.errorhandler(403)
+def page_not_found(e):
+    return redirect(url_for('main_routes.index'))
+
 if __name__ == "__main__":
     app.run()
 

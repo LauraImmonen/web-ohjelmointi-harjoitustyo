@@ -223,10 +223,17 @@ def delete_student(course_id):
 
 @teacher_routes.route("/delete_student_confirm/<int:course_id>", methods=["POST"])
 def delete_student_confirm(course_id):
+    if session["csrf_token"] != request.form["csrf_token"]:
+        abort(403)
+
     if not is_admin():
         return "Luvaton pääsy!"
 
     student_id = request.form.get('student_id')
+
+    if teacher_queries.check_existing_grade(student_id, course_id):
+        flash("Et voi poistaa opiskelijaa, koska hän on jo saanut arvosanan kurssista!")
+        return redirect(url_for("teacher_routes.courses_list_teachers"))
 
     return render_template("confirm_delete_student.html", course_id=course_id, student_id=student_id)
 

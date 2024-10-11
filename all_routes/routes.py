@@ -28,7 +28,6 @@ def have_account():
 @main_routes.route("/new_account", methods=["GET", "POST"])
 def new_account():
     if request.method == 'POST':
-
         if session["csrf_token"] != request.form["csrf_token"]:
             abort(403)
 
@@ -71,7 +70,6 @@ def is_admin():
 
 @main_routes.route("/login", methods=["GET", "POST"])
 def login():
-
     if request.method == "POST":
         if session["csrf_token"] != request.form["csrf_token"]:
             abort(403)
