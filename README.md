@@ -13,9 +13,10 @@ admin = opettaja ja user = opiskelija.
 - Opiskelija näkee listan kursseista ja voi liittyä kurssille.
 - opiskelija (user) pystyy tarkastelemaan omia tietojaan (omat kurssit, arvosanat).
 
-Tämä on ensimmäinen web-sovellukseni, joten koodini on varmasti vielä hieman kömpelöä. Otan mielelläni vastaan vinkkejä/palautetta siitä, miten pystyisin parantamaan koodini toimivuutta ja ymmärrettävyyttä.
+Ottaen huomioon, kuinka vähän aikaa tällä kurssilla oli sovellukset valmistamiseen (7vko) ja siihen, että tämän on ensimmäinen web-sovellukseni, olen tyytyväinen lopputulokseen. Sain sovellukseni kaikki ominaisuudet toimimaan kuten suunnittelin, ja mielestäni tietoturva ominaisuudet ovat sovelluksessa kunnossa.
+Sovelluksessa on kuitenkin vielä odotettavasti paljon parantamista/ominaisuuksia joita voisi hioa ja lisätä. Varsinkin sovelluksen ulkoasun tekemisessä on minulla vielä opeteltavaa.
 
-Tällä hetkellä sovelluksessa pystyy tekemään kaikkia aikaisemmin kuvailemiani toimintoja, mutta sovelluksen ulkoasussa on vielä puitteita.
+Otan mielelläni vastaan vinkkejä/palautetta siitä, miten pystyisin parantamaan koodini toimivuutta ja ymmärrettävyyttä.
 
 # Asennusohjeet
 
