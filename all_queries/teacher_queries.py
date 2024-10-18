@@ -75,7 +75,19 @@ def check_existing_grade(student_id, course_id):
     SELECT COUNT(*) FROM grades
     WHERE student_id = :student_id AND course_id = :course_id"""
     return db.session.execute(text(sql_check_existing_grade),
-        {"student_id": student_id, "course_id": course_id}).scalar()
+        {"student_id":student_id, "course_id":course_id}).scalar()
+
+def get_students_with_grades(course_id):
+    sql_query = """
+    SELECT s.student_id, s.username, g.grade
+    FROM students s
+    JOIN enrollments e ON s.student_id = e.student_id
+    LEFT JOIN grades g ON s.student_id = g.student_id
+    AND g.course_id = :course_id
+    WHERE e.course_id = :course_id
+    """
+    result = db.session.execute(text(sql_query), {"course_id": course_id}).fetchall()
+    return result
 
 def insert_grade(student_id, course_id, teacher_id, grade):
     sql_insert_grade = """

@@ -122,8 +122,8 @@ def edit_course(course_id):
         course_description = request.form.get("course_description")
 
         teacher_queries.update_course(course_id, course_name, course_description)
-
         flash("Muutokset tallennettu onnistuneesti!")
+
         return redirect(url_for('teacher_routes.courses_list_teachers'))
 
 
@@ -192,12 +192,13 @@ def grade_course(course_id):
 
     course_name = queries.get_coursename_by_id(course_id)
 
-    students = teacher_queries.get_students_by_course_id(course_id)
+    students = teacher_queries.get_students_with_grades(course_id)
 
     if not students:
         flash("Kurssillasi ei vielä ole oppilaita.")
         return redirect(url_for("teacher_routes.courses_list_teachers"))
 
+    print(students)
     return render_template("grade_course.html", course_id=course_id, course_name=course_name[0], students=students)
 
 
@@ -213,26 +214,26 @@ def save_grades(course_id):
 
     teacher_id = teacher_queries.get_teacher_id(username)
 
-    grades = request.form.getlist('grades')
+    student_id = request.form.get('student_id')
+
+    grade = request.form.get('grade')
 
     if not check_if_course_teacher(course_id, teacher_id):
         return "luvaton pääsy!"
 
-    for grade_entry in grades:
-        student_id, grade = grade_entry.split(',')
+    print(grade)
 
-        existing_grade_count = teacher_queries.check_existing_grade(student_id, course_id)
+    existing_grade_count = teacher_queries.check_existing_grade(student_id, course_id)
 
-        if existing_grade_count > 0:
-            flash("Tämä oppilas on jo saanut arvosanan kurssista.")
-            continue
-
+    if existing_grade_count > 0:
+        flash("Tämä oppilas on jo saanut arvosanan kurssista.")
+        return redirect(url_for("teacher_routes.grade_course", course_id = course_id))
+    else:
         teacher_queries.insert_grade(student_id, course_id, teacher_id, grade)
-
-    db.session.commit()
-    flash("Arvosanat tallennettu onnistuneesti!")
+        flash("Arvosanat tallennettu onnistuneesti!")
 
     return redirect(url_for('teacher_routes.courses_list_teachers'))
+
 
 @teacher_routes.route("/delete_student/<int:course_id>", methods=["GET"])
 def delete_student(course_id):
