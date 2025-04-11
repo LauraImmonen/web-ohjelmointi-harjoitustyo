@@ -91,10 +91,12 @@ def get_students_with_grades(course_id):
 
 def insert_grade(student_id, course_id, teacher_id, grade):
     sql_insert_grade = """
-    INSERT INTO grades (student_id, course_id,teacher_id, grade)
+    INSERT INTO grades (student_id, course_id, teacher_id, grade)
     VALUES (:student_id, :course_id, :teacher_id, :grade)"""
     db.session.execute(text(sql_insert_grade), {"student_id":student_id, "course_id":course_id,
             "teacher_id":teacher_id, "grade":grade})
+    db.session.commit()
+
 
 def delete_enrollment(course_id, student_id):
     sql_delete_enrollment = """
